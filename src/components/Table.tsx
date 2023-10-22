@@ -1,7 +1,5 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-extra-parens */
-// @ts-nocheck
 import * as React from 'react';
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
@@ -41,12 +39,21 @@ const StyledTableRow = styled(TableRow)(() => ({
     border: 0,
   },
 }));
+type Column = {
+  id: string;
+  label: string;
+  renderCell?: (data: string | object) => React.ReactNode;
+};
 
-export function CustomTable({ column }: any) {
+interface Props {
+  column: Column[];
+}
+
+export function CustomTable({ column }: Props) {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
-  const handleChangePage = (event: unknown, newPage: number) => {
+  const handleChangePage = (_event: unknown, newPage: number) => {
     setPage(newPage);
   };
 
@@ -82,7 +89,7 @@ export function CustomTable({ column }: any) {
                     key={index}
                   >
                     {column.map((column, index) => {
-                      const value = row[column.id];
+                      const value = (row as any)[column.id];
                       return (
                         <StyledTableCell key={value || index}>
                           {column.renderCell

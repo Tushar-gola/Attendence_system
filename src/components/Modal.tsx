@@ -20,14 +20,14 @@ const Transition = React.forwardRef(function Transition(
   return <Slide direction="down" ref={ref} {...props} />;
 });
 type ModalProps = {
-  children: string | React.ReactNode;
-  buttonText: string;
-  heading: string;
-  handleClose: (val: string) => void;
-  open: boolean;
-  handleOpen: (val: string) => void;
+  children?: string | React.ReactNode;
+  buttonText?: string;
+  heading?: string;
+  handleClose?: (val: string) => void;
+  open?: boolean;
+  handleOpen?: (val: string) => void;
   handleCloseScreen?: ((val: string) => void) | undefined;
-  form: string | undefined;
+  form?: string | undefined;
   maxWidth?: Breakpoint | false;
 };
 
@@ -52,7 +52,7 @@ export const Modal = ({
         {buttonText}
       </Button>
       <Dialog
-        open={open}
+        open={open ?? false}
         onClose={() => handleCloseScreen?.(form || '')}
         TransitionComponent={Transition}
         fullWidth
@@ -64,7 +64,7 @@ export const Modal = ({
         <DialogTitle id="scroll-dialog-title">{heading}</DialogTitle>
         <DialogContent dividers={true}>{children}</DialogContent>
         <DialogActions>
-          <Button onClick={() => handleClose(form || '')} variant="outlined">
+          <Button onClick={() => handleClose?.(form || '')} variant="outlined">
             Cancel
           </Button>
           <Button type="submit" form={form} variant="contained">

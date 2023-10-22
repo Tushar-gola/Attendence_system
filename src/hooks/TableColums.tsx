@@ -1,7 +1,7 @@
 import EditIcon from '@mui/icons-material/Edit';
 import { IconButton } from '@mui/material';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
-import { GetTableData } from '@/hooks';
+import { GetTableData, ModalEvents } from '@/hooks';
 
 type Item = {
   id: string;
@@ -10,6 +10,8 @@ type Item = {
 };
 export const TableColums = () => {
   const { handleSetData } = GetTableData(); // Use the hook and destructure the values
+  const { handleOpen } = ModalEvents();
+
   const Company: Item[] = [
     { id: 'code', label: 'Code', renderCell: undefined },
     { id: 'name', label: 'Name', renderCell: undefined },
@@ -23,7 +25,13 @@ export const TableColums = () => {
       renderCell: (data) => {
         return (
           <>
-            <IconButton color="primary" onClick={() => handleSetData(data)}>
+            <IconButton
+              color="primary"
+              onClick={() => {
+                handleSetData(data);
+                handleOpen('company');
+              }}
+            >
               <EditIcon />
             </IconButton>
             <IconButton color="primary">
@@ -34,7 +42,6 @@ export const TableColums = () => {
       },
     },
   ];
-
   const Department: Item[] = [
     { id: 'name', label: 'Name', renderCell: undefined },
     { id: 'remark', label: 'Remarks', renderCell: undefined },
@@ -44,7 +51,13 @@ export const TableColums = () => {
       renderCell: (data) => {
         return (
           <>
-            <IconButton color="primary" onClick={() => handleSetData(data)}>
+            <IconButton
+              color="primary"
+              onClick={() => {
+                handleSetData(data);
+                handleOpen('department');
+              }}
+            >
               <EditIcon />
             </IconButton>
             <IconButton color="primary">
@@ -75,7 +88,6 @@ export const TableColums = () => {
       },
     },
   ];
-
   const Branch: Item[] = [
     { id: 'name', label: 'Name', renderCell: undefined },
     { id: 'address', label: 'Address', renderCell: undefined },
