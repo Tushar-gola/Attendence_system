@@ -11,7 +11,6 @@ type Item = {
 export const TableColums = () => {
   const { handleSetData } = GetTableData(); // Use the hook and destructure the values
   const { handleOpen } = ModalEvents();
-
   const Company: Item[] = [
     { id: 'code', label: 'Code', renderCell: undefined },
     { id: 'name', label: 'Name', renderCell: undefined },

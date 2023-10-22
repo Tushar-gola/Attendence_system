@@ -12,5 +12,5 @@ export const GetAPi = (key: string, fn: () => void) => {
   } else {
     dispatch(setLoading(false));
   }
-  return { data };
+  return { data, isLoading };
 };
