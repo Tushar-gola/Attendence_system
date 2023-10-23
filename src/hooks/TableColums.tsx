@@ -12,12 +12,19 @@ export const TableColums = () => {
   const { handleSetData } = GetTableData(); // Use the hook and destructure the values
   const { handleOpen } = ModalEvents();
   const Company: Item[] = [
-    { id: 'code', label: 'Code', renderCell: undefined },
-    { id: 'name', label: 'Name', renderCell: undefined },
+    { id: 'id', label: '#id', renderCell: undefined },
+    { id: 'company_code', label: 'Company Code', renderCell: undefined },
+    { id: 'company_name', label: 'Company Name', renderCell: undefined },
     { id: 'address', label: 'Address', renderCell: undefined },
     { id: 'phone', label: 'Phone no', renderCell: undefined },
     { id: 'email', label: 'Email id', renderCell: undefined },
     { id: 'website', label: 'Website', renderCell: undefined },
+    { id: 'tin_no', label: 'Tin No', renderCell: undefined },
+    { id: 'city', label: 'City', renderCell: undefined },
+    { id: 'country', label: 'Country', renderCell: undefined },
+    { id: 'state', label: 'State', renderCell: undefined },
+    { id: 'pancard', label: 'PanCard No', renderCell: undefined },
+    { id: 'pincode', label: 'PinCode', renderCell: undefined },
     {
       id: 'action',
       label: 'Action',
@@ -28,7 +35,7 @@ export const TableColums = () => {
               color="primary"
               onClick={() => {
                 handleSetData(data);
-                handleOpen('company');
+                handleOpen();
               }}
             >
               <EditIcon />
@@ -54,7 +61,7 @@ export const TableColums = () => {
               color="primary"
               onClick={() => {
                 handleSetData(data);
-                handleOpen('department');
+                handleOpen();
               }}
             >
               <EditIcon />

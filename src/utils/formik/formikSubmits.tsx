@@ -1,7 +1,3 @@
-export const SigninSubmit = (value: unknown) => {
-  console.log(value);
-};
-
 export const CompanySubmit = (value: unknown) => {
   console.log(value);
 };

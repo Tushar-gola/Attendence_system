@@ -1,11 +1,11 @@
 import React from 'react';
 
 export const GetTableData = () => {
-  const [data, setData] = React.useState<string | undefined | object>();
+  const [editData, setEditData] = React.useState<string | undefined | object>();
   const handleSetData = (data: string | object) => {
-    setData(data);
+    setEditData(data);
   };
-  console.log(data, 'nnnnnnnnnnnnnnnn');
+  console.log(editData, 'nnnnnnnnnnnnnnnn');
 
-  return { data, handleSetData };
+  return { editData, handleSetData };
 };

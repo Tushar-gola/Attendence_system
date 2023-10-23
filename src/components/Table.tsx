@@ -11,23 +11,13 @@ import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import { styled } from '@mui/material';
 
-const rows = [
-  {
-    code: '123',
-    name: 'Company A',
-    address: '123 Main St',
-    phone: '555-1234',
-    email: 'company@example.com',
-    website: 'www.company-a.com',
-  },
-];
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
     backgroundColor: theme.palette.common.black,
     color: theme.palette.common.white,
   },
   [`&.${tableCellClasses.body}`]: {
-    fontSize: 14,
+    fontSize: 12,
   },
 }));
 
@@ -47,9 +37,10 @@ type Column = {
 
 interface Props {
   column: Column[];
+  row: [key: string];
 }
 
-export function CustomTable({ column }: Props) {
+export function CustomTable({ column, row }: Props) {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
@@ -71,45 +62,43 @@ export function CustomTable({ column }: Props) {
           <TableHead>
             <TableRow>
               {column.map((column) => (
-                <TableCell key={column.id} style={{ fontSize: '1rem' }}>
+                <TableCell key={column.id} style={{ fontSize: '.8rem' }}>
                   {column.label}
                 </TableCell>
               ))}
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows
-              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((row, index) => {
-                return (
-                  <StyledTableRow
-                    // hover
-                    role="checkbox"
-                    tabIndex={-1}
-                    key={index}
-                  >
-                    {column.map((column, index) => {
-                      const value = (row as any)[column.id];
-                      return (
-                        <StyledTableCell key={value || index}>
-                          {column.renderCell
-                            ? column.renderCell(row)
-                            : value
-                            ? value
-                            : 'N/A'}
-                        </StyledTableCell>
-                      );
-                    })}
-                  </StyledTableRow>
-                );
-              })}
+            {row?.map((row, index) => {
+              return (
+                <StyledTableRow
+                  // hover
+                  role="checkbox"
+                  tabIndex={-1}
+                  key={index}
+                >
+                  {column.map((column) => {
+                    const value = (row as any)[column.id];
+                    return (
+                      <StyledTableCell key={column.id}>
+                        {column.renderCell
+                          ? column.renderCell(row)
+                          : value
+                          ? value
+                          : 'N/A'}
+                      </StyledTableCell>
+                    );
+                  })}
+                </StyledTableRow>
+              );
+            })}
           </TableBody>
         </Table>
       </TableContainer>
       <TablePagination
         rowsPerPageOptions={[10, 25, 100]}
         component="div"
-        count={rows.length}
+        count={row?.length}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}

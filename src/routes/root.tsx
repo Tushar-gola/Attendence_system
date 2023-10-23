@@ -2,7 +2,7 @@ import { Route, Routes } from 'react-router-dom';
 import { ProtectedRoute, PublicRoute } from '@/helpers';
 import { Navigate } from 'react-router-dom';
 import { SignIn } from '@/pages';
-import { Urls } from '.';
+import { Urls } from '@/routes';
 export function Routers() {
   return (
     <>
@@ -12,7 +12,7 @@ export function Routers() {
           <Route path="/signIn" element={<SignIn />} />
         </Route>
         <Route path="/" element={<ProtectedRoute />}>
-          {Urls.map(({ path, page }) => {
+          {Urls?.map(({ path, page }) => {
             return <Route path={path} element={page} key={path} />;
           })}
         </Route>

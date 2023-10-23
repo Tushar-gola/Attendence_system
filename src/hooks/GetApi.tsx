@@ -1,5 +1,4 @@
 import { useQuery } from 'react-query';
-// import { fakeApi } from '@/utils';
 import { setLoading } from '@/redux';
 import { useAppDispatch } from '@/hooks';
 

@@ -16,7 +16,7 @@ export const companySchema = Yup.object().shape({
     .email('Invalid email address')
     .required('Email is required'),
   website: Yup.string()
-    .url('Invalid website URL')
+    // .url('Invalid website URL')
     .required('Website is required'),
   country: Yup.string().required('Country is required'),
   state: Yup.string().required('State is required'),

@@ -23,10 +23,10 @@ type ModalProps = {
   children?: string | React.ReactNode;
   buttonText?: string;
   heading?: string;
-  handleClose?: (val: string) => void;
+  handleClose?: () => void;
   open?: boolean;
-  handleOpen?: (val: string) => void;
-  handleCloseScreen?: ((val: string) => void) | undefined;
+  handleOpen?: () => void;
+  handleCloseScreen?: (() => void) | undefined;
   form?: string | undefined;
   maxWidth?: Breakpoint | false;
 };
@@ -42,18 +42,16 @@ export const Modal = ({
   form,
   maxWidth,
 }: ModalProps) => {
+  console.log(open);
+
   return (
     <>
-      <Button
-        onClick={() => handleOpen?.(form || '')}
-        startIcon={<AddIcon />}
-        variant="contained"
-      >
+      <Button onClick={handleOpen} startIcon={<AddIcon />} variant="contained">
         {buttonText}
       </Button>
       <Dialog
         open={open ?? false}
-        onClose={() => handleCloseScreen?.(form || '')}
+        onClose={handleCloseScreen}
         TransitionComponent={Transition}
         fullWidth
         maxWidth={maxWidth}
@@ -64,7 +62,7 @@ export const Modal = ({
         <DialogTitle id="scroll-dialog-title">{heading}</DialogTitle>
         <DialogContent dividers={true}>{children}</DialogContent>
         <DialogActions>
-          <Button onClick={() => handleClose?.(form || '')} variant="outlined">
+          <Button onClick={handleClose} variant="outlined">
             Cancel
           </Button>
           <Button type="submit" form={form} variant="contained">

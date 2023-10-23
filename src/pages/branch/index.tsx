@@ -1,1 +1,1 @@
-export * from './branch-page';
+export * from './branchPage';

@@ -1,9 +1,9 @@
 import {
-  BranchPage,
-  CompanyPage,
   Dashboard,
+  CompanyPage,
   DepartmentPage,
   DesignationPage,
+  BranchPage,
 } from '@/pages';
 interface URLS {
   path: string;
@@ -12,12 +12,7 @@ interface URLS {
 export const Urls: URLS[] = [
   { path: '/dashboard', page: <Dashboard /> },
   { path: '/company', page: <CompanyPage /> },
-  { path: '/company/:toggle', page: <CompanyPage /> },
-  { path: '/department/:toggle', page: <DepartmentPage /> },
   { path: '/department', page: <DepartmentPage /> },
-  { path: '/department/:toggle', page: <DepartmentPage /> },
   { path: '/designation', page: <DesignationPage /> },
-  { path: '/designation/:toggle', page: <DesignationPage /> },
   { path: '/branch', page: <BranchPage /> },
-  { path: '/branch/:toggle', page: <BranchPage /> },
 ];
