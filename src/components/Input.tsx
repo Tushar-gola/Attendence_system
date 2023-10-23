@@ -21,65 +21,29 @@ const sty = {
   height: '100%',
 };
 
-export const Input = ({
-  id,
-  label,
-  name,
-  value,
-  required,
-  placeholder,
-  half,
-  error,
-  ...props
-}: InputProps) => {
+export const Input = ({ id, label, name, value, required, placeholder, half, error, ...props }: InputProps) => {
   return (
     <>
       {half ? (
         <>
           <Column xs={4}>
             <div style={sty}>
-              <label
-                htmlFor={id}
-                className={`${required ? 'estric' : 'non-estric'}`}
-              >
+              <label htmlFor={id} className={`${required ? 'estric' : 'non-estric'}`}>
                 {label}
               </label>
             </div>
           </Column>
           <Column xs={8}>
-            <input
-              type="text"
-              id={id}
-              name={name}
-              value={value}
-              className="InputFeild"
-              required={required}
-              placeholder={placeholder}
-              style={{ borderColor: error ? 'red' : '' }}
-              {...props}
-            />
+            <input type="text" id={id} name={name} value={value} className="InputFeild" required={required} placeholder={placeholder} style={{ borderColor: error ? 'red' : '' }} {...props} />
             <div className="helperText">{error}</div>
           </Column>
         </>
       ) : (
         <Column xs={6}>
-          <label
-            htmlFor={id}
-            className={`${required ? 'estric' : 'non-estric'}`}
-          >
+          <label htmlFor={id} className={`${required ? 'estric' : 'non-estric'}`}>
             {label}
           </label>
-          <input
-            type="text"
-            id={id}
-            name={name}
-            value={value}
-            className="InputFeild"
-            required={required}
-            placeholder={placeholder}
-            {...props}
-            style={{ marginTop: '8px', borderColor: error ? 'red' : '' }}
-          />
+          <input type="text" id={id} name={name} value={value} className="InputFeild" required={required} placeholder={placeholder} {...props} style={{ marginTop: '8px', borderColor: error ? 'red' : '' }} />
           <div className="helperText">{error}</div>
         </Column>
       )}

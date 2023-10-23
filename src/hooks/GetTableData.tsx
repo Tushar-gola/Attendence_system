@@ -5,7 +5,5 @@ export const GetTableData = () => {
   const handleSetData = (data: string | object) => {
     setEditData(data);
   };
-  console.log(editData, 'nnnnnnnnnnnnnnnn');
-
   return { editData, handleSetData };
 };

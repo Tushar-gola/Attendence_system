@@ -1,28 +1,52 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+// @ts-nocheck
 import React from 'react';
-import {
-  Column,
-  Form,
-  Modal,
-  Row,
-  Input,
-  CustomTable,
-  SearchFilter,
-} from '@/components';
-// import { fakeApi } from '@/utils';
-import { ModalEvents, TableColums } from '@/hooks';
+import { Column, Form, Modal, Row, Input, CustomTable, SearchFilter } from '@/components';
+import { GetAPi, GetTableData, ModalEvents, usePostApi } from '@/hooks';
 import { DesignationSchema } from '@/schemas';
-import { DesignationtSubmit, DesignationInit } from '@/utils';
+import { DesignationGetApi, DesignationInit, DesignationPost, DesignationPut } from '@/utils';
 import { useFormik } from 'formik';
-// import { PostApi } from '@/hooks/PostApi';
+import { IconButton } from '@mui/material';
+import EditIcon from '@mui/icons-material/Edit';
 export const DesignationPage = React.memo(() => {
   const { open, handleClose, handleOpen, handleCloseScreen } = ModalEvents();
-  const { Designation } = TableColums();
-  const { handleChange, handleBlur, handleSubmit, values, errors, touched } =
-    useFormik({
-      initialValues: DesignationInit,
-      validationSchema: DesignationSchema,
-      onSubmit: DesignationtSubmit,
-    });
+  const { editData, handleSetData } = GetTableData();
+  const { data } = GetAPi('designation', DesignationGetApi);
+  const row = data?.data?.data;
+  const { mutation } = usePostApi(editData ? DesignationPut : DesignationPost);
+  const Designation = [
+    { id: 'name', label: 'Name', renderCell: undefined },
+    { id: 'remark', label: 'Remarks', renderCell: undefined },
+    {
+      id: 'action',
+      label: 'Action',
+      renderCell: (data) => {
+        return (
+          <>
+            <IconButton
+              color="primary"
+              onClick={() => {
+                handleSetData(data);
+                handleOpen();
+              }}
+            >
+              <EditIcon />
+            </IconButton>
+            <IconButton color="primary">{/* <HighlightOffIcon /> */}</IconButton>
+          </>
+        );
+      },
+    },
+  ];
+  const { handleChange, handleBlur, handleSubmit, values, errors, touched, setValues } = useFormik({
+    initialValues: DesignationInit,
+    validationSchema: DesignationSchema,
+    onSubmit: (values, action) => {
+      mutation.mutate(values);
+      handleClose();
+      action.resetForm();
+    },
+  });
 
   const inputData = [
     {
@@ -44,61 +68,20 @@ export const DesignationPage = React.memo(() => {
       error: errors.remark && touched.remark ? errors.remark : undefined,
     },
   ];
-  // const { mutation } = PostApi(PostData);
-  // // const { data } = GetAPi('hello', fakeApi);
-  // // console.log(data);
-  // const handle = () => {
-  //   const formData = { name: 'Tushar ' };
-  //   mutation.mutate(formData);
-  //   console.log(mutation);
-  // };
+
+  React.useEffect(() => {
+    editData && setValues(editData);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [editData]);
   return (
     <>
       <Row>
         <Column>
-          <Modal
-            buttonText={'Designation'}
-            heading="Add Designation"
-            handleClose={handleClose}
-            open={open}
-            handleOpen={handleOpen}
-            handleCloseScreen={handleCloseScreen}
-            form="designation"
-            maxWidth="sm"
-          >
-            <Form
-              onSubmit={handleSubmit}
-              id="designation"
-              rowSpacing={2}
-              columnSpacing={2}
-              about="Designation Details"
-            >
-              {inputData.map(
-                ({
-                  name,
-                  label,
-                  placeholder,
-                  half,
-                  values,
-                  required,
-                  error,
-                }) => {
-                  return (
-                    <Input
-                      name={name}
-                      label={label}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      value={values}
-                      placeholder={placeholder}
-                      required={required}
-                      half={half}
-                      error={error || undefined}
-                      key={name}
-                    />
-                  );
-                },
-              )}
+          <Modal buttonText={'Designation'} heading="Add Designation" handleClose={handleClose} open={open} handleOpen={handleOpen} handleCloseScreen={handleCloseScreen} form="designation" maxWidth="sm">
+            <Form onSubmit={handleSubmit} id="designation" rowSpacing={2} columnSpacing={2} about="Designation Details">
+              {inputData.map(({ name, label, placeholder, half, values, required, error }) => {
+                return <Input name={name} label={label} onChange={handleChange} onBlur={handleBlur} value={values} placeholder={placeholder} required={required} half={half} error={error || undefined} key={name} />;
+              })}
             </Form>
           </Modal>
         </Column>
@@ -106,7 +89,7 @@ export const DesignationPage = React.memo(() => {
           <SearchFilter placeholder="Search on Designation name" />
         </Column>
         <Column xs={12}>
-          <CustomTable column={Designation} />
+          <CustomTable column={Designation} row={row} />
         </Column>
       </Row>
       {/* <button onClick={handle}>hj\asfdahhsjaklsjhkggh</button> */}

@@ -42,75 +42,23 @@ const sty = {
   alignItems: 'center',
   height: '100%',
 };
-export const SelectBar = React.memo(
-  ({
-    placeholder,
-    name,
-    value,
-    option,
-    id,
-    required,
-    label,
-    half,
-    error,
-    ...props
-  }: SelectBarProps) => {
-    console.log(error, 'kkkkkkkkkkkkkk');
-
-    return (
-      <>
-        {half ? (
-          <>
-            <Column xs={4}>
-              <div style={sty}>
-                <label
-                  htmlFor={id}
-                  className={`${required ? 'estric' : 'non-estric'}`}
-                >
-                  {label}
-                </label>
-              </div>
-            </Column>
-            <Column xs={8}>
-              <FormControl fullWidth>
-                <Select
-                  name={name}
-                  displayEmpty
-                  value={value}
-                  {...props}
-                  input={<OutlinedInput />}
-                  MenuProps={MenuProps}
-                  sx={{
-                    '& .MuiSelect-select': {
-                      padding: '8px',
-                    },
-                  }}
-                >
-                  <MenuItem disabled value="">
-                    <em>{placeholder}</em>
-                  </MenuItem>
-                  {option?.map(({ id, label }) => (
-                    <MenuItem key={id} value={label}>
-                      {label}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            </Column>
-          </>
-        ) : (
-          <Column xs={6}>
-            <label
-              htmlFor={id}
-              className={`${required ? 'estric' : 'non-estric'}`}
-            >
-              {label}
-            </label>
+export const SelectBar = React.memo(({ placeholder, name, value, option, id, required, label, half, error, ...props }: SelectBarProps) => {
+  return (
+    <>
+      {half ? (
+        <>
+          <Column xs={4}>
+            <div style={sty}>
+              <label htmlFor={id} className={`${required ? 'estric' : 'non-estric'}`}>
+                {label}
+              </label>
+            </div>
+          </Column>
+          <Column xs={8}>
             <FormControl fullWidth>
               <Select
                 name={name}
                 displayEmpty
-                error={error ? true : false}
                 value={value}
                 {...props}
                 input={<OutlinedInput />}
@@ -131,10 +79,41 @@ export const SelectBar = React.memo(
                 ))}
               </Select>
             </FormControl>
-            <div className="helperText">{error}</div>
           </Column>
-        )}
-      </>
-    );
-  },
-);
+        </>
+      ) : (
+        <Column xs={6}>
+          <label htmlFor={id} className={`${required ? 'estric' : 'non-estric'}`}>
+            {label}
+          </label>
+          <FormControl fullWidth>
+            <Select
+              name={name}
+              displayEmpty
+              error={error ? true : false}
+              value={value}
+              {...props}
+              input={<OutlinedInput />}
+              MenuProps={MenuProps}
+              sx={{
+                '& .MuiSelect-select': {
+                  padding: '8px',
+                },
+              }}
+            >
+              <MenuItem disabled value="">
+                <em>{placeholder}</em>
+              </MenuItem>
+              {option?.map(({ id, label }) => (
+                <MenuItem key={id} value={label}>
+                  {label}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+          <div className="helperText">{error}</div>
+        </Column>
+      )}
+    </>
+  );
+});

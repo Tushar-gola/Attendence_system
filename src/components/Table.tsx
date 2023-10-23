@@ -48,9 +48,7 @@ export function CustomTable({ column, row }: Props) {
     setPage(newPage);
   };
 
-  const handleChangeRowsPerPage = (
-    event: React.ChangeEvent<HTMLInputElement>,
-  ) => {
+  const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
@@ -79,15 +77,7 @@ export function CustomTable({ column, row }: Props) {
                 >
                   {column.map((column) => {
                     const value = (row as any)[column.id];
-                    return (
-                      <StyledTableCell key={column.id}>
-                        {column.renderCell
-                          ? column.renderCell(row)
-                          : value
-                          ? value
-                          : 'N/A'}
-                      </StyledTableCell>
-                    );
+                    return <StyledTableCell key={column.id}>{column.renderCell ? column.renderCell(row) : value ? value : 'N/A'}</StyledTableCell>;
                   })}
                 </StyledTableRow>
               );
@@ -95,15 +85,7 @@ export function CustomTable({ column, row }: Props) {
           </TableBody>
         </Table>
       </TableContainer>
-      <TablePagination
-        rowsPerPageOptions={[10, 25, 100]}
-        component="div"
-        count={row?.length}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-      />
+      <TablePagination rowsPerPageOptions={[10, 25, 100]} component="div" count={row?.length || 0} rowsPerPage={rowsPerPage} page={page} onPageChange={handleChangePage} onRowsPerPageChange={handleChangeRowsPerPage} />
     </Paper>
   );
 }

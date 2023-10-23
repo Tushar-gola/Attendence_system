@@ -1,13 +1,5 @@
 import * as React from 'react';
-import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  Slide,
-  Breakpoint,
-} from '@mui/material';
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Slide, Breakpoint } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import { TransitionProps } from '@mui/material/transitions';
 const Transition = React.forwardRef(function Transition(
@@ -29,43 +21,25 @@ type ModalProps = {
   handleCloseScreen?: (() => void) | undefined;
   form?: string | undefined;
   maxWidth?: Breakpoint | false;
+  vaild?: boolean;
 };
 
-export const Modal = ({
-  children,
-  buttonText,
-  heading,
-  handleClose,
-  open,
-  handleOpen,
-  handleCloseScreen,
-  form,
-  maxWidth,
-}: ModalProps) => {
-  console.log(open);
+export const Modal = ({ children, buttonText, heading, handleClose, open, handleOpen, handleCloseScreen, form, maxWidth, vaild }: ModalProps) => {
+  console.log(vaild);
 
   return (
     <>
       <Button onClick={handleOpen} startIcon={<AddIcon />} variant="contained">
         {buttonText}
       </Button>
-      <Dialog
-        open={open ?? false}
-        onClose={handleCloseScreen}
-        TransitionComponent={Transition}
-        fullWidth
-        maxWidth={maxWidth}
-        scroll="paper"
-        aria-labelledby="scroll-dialog-title"
-        aria-describedby="scroll-dialog-description"
-      >
+      <Dialog open={open ?? false} onClose={handleCloseScreen} TransitionComponent={Transition} fullWidth maxWidth={maxWidth} scroll="paper" aria-labelledby="scroll-dialog-title" aria-describedby="scroll-dialog-description">
         <DialogTitle id="scroll-dialog-title">{heading}</DialogTitle>
         <DialogContent dividers={true}>{children}</DialogContent>
         <DialogActions>
           <Button onClick={handleClose} variant="outlined">
             Cancel
           </Button>
-          <Button type="submit" form={form} variant="contained">
+          <Button type="submit" form={form} variant="contained" disabled={vaild}>
             Submit
           </Button>
         </DialogActions>

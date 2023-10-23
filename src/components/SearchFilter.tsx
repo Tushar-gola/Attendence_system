@@ -21,12 +21,7 @@ export function SearchFilter({ placeholder, ...props }: SearchFilterProps) {
       <IconButton sx={{ p: '10px' }}>
         <SearchIcon />
       </IconButton>
-      <InputBase
-        sx={{ ml: 1, flex: 1 }}
-        placeholder={placeholder}
-        inputProps={{ 'aria-label': `${placeholder}` }}
-        {...props}
-      />
+      <InputBase sx={{ ml: 1, flex: 1 }} placeholder={placeholder} inputProps={{ 'aria-label': `${placeholder}` }} {...props} />
       <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
       <IconButton color="primary" sx={{ p: '10px' }} aria-label="directions">
         <DirectionsIcon />

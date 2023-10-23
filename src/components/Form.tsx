@@ -14,13 +14,7 @@ const sty = {
   fontSize: '1.2rem',
   fontWeight: 500,
 };
-export const Form = ({
-  children,
-  onSubmit,
-  id,
-  about,
-  ...props
-}: FormProps) => {
+export const Form = ({ children, onSubmit, id, about, ...props }: FormProps) => {
   return (
     <>
       <form onSubmit={onSubmit} id={id} style={{ marginBottom: '3rem' }}>

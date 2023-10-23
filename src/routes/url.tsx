@@ -1,10 +1,4 @@
-import {
-  Dashboard,
-  CompanyPage,
-  DepartmentPage,
-  DesignationPage,
-  BranchPage,
-} from '@/pages';
+import { Dashboard, CompanyPage, DepartmentPage, DesignationPage, BranchPage } from '@/pages';
 interface URLS {
   path: string;
   page: React.ReactNode;

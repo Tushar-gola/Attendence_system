@@ -10,20 +10,19 @@ export const usePostApi = (fn: MutationFunction<unknown>) => {
   const dispatch = useAppDispatch();
   const mutation = useMutation(fn, {
     onSuccess: (data) => {
-      console.log(data, 'kkkkkkkkkkkkkkk');
+      console.log(data);
       if (data?.data?.token) {
         localStorage.setItem('token', data?.data?.token);
         navigate('/dashboard');
       }
     },
     onError: (error) => {
-      console.log(error.response.data.message);
+      console.log(error);
       enqueueSnackbar(error.response.data.message, {
         variant: error.response.data.type,
       });
     },
   });
-  console.log(mutation);
   if (mutation?.isLoading) {
     dispatch(setLoading(true));
   } else {

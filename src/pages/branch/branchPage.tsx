@@ -1,48 +1,60 @@
 /* eslint-disable no-extra-parens */
-// /* eslint-disable @typescript-eslint/no-explicit-any */
-// import { SelectBar } from '@/components';
-// function handle(event: { target: { value: any } }) {
-//   console.log(event.target.value);
-// }
-// export const BranchPage = () => {
-//   return (
-//     <div>
-//       <SelectBar
-//         placeholder="Serach Bar"
-//         option={[
-//           { id: 'hello', label: 'ksahgs' },
-//           { id: 'hello1', label: 'ksahgs' },
-//         ]}
-//         onChange={handle}
-//       />
-//     </div>
-//   );
-// };
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+// @ts-nocheck
 import React from 'react';
-import {
-  Column,
-  Form,
-  Modal,
-  Row,
-  Input,
-  CustomTable,
-  SearchFilter,
-  SelectBar,
-} from '@/components';
-import { ModalEvents, TableColums } from '@/hooks';
+import { Column, Form, Modal, Row, Input, CustomTable, SearchFilter, SelectBar } from '@/components';
+import { GetAPi, GetTableData, ModalEvents, usePostApi } from '@/hooks';
 import { BranchSchema } from '@/schemas';
-import { DepartmentSubmit, BranchInit } from '@/utils';
+import { BranchGetApi, BranchInit, BranchPost, BranchPut } from '@/utils';
 import { useFormik } from 'formik';
-// import { Branch } from '@/constants';
+import { IconButton } from '@mui/material';
+import EditIcon from '@mui/icons-material/Edit';
 export const BranchPage = React.memo(() => {
   const { open, handleClose, handleOpen, handleCloseScreen } = ModalEvents();
-  const { Branch } = TableColums();
-  const { handleChange, handleBlur, handleSubmit, values, errors, touched } =
-    useFormik({
-      initialValues: BranchInit,
-      validationSchema: BranchSchema,
-      onSubmit: DepartmentSubmit,
-    });
+  const { editData, handleSetData } = GetTableData();
+  const { data } = GetAPi('branch', BranchGetApi);
+  const row = data?.data?.data;
+  const { mutation } = usePostApi(editData ? BranchPut : BranchPost);
+  const Branch = [
+    { id: 'name', label: 'Name', renderCell: undefined },
+    { id: 'address', label: 'Address', renderCell: undefined },
+    { id: 'country', label: 'Contry', renderCell: undefined },
+    { id: 'state', label: 'State', renderCell: undefined },
+    { id: 'city', label: 'City', renderCell: undefined },
+    { id: 'pincode', label: 'PinCode', renderCell: undefined },
+    { id: 'phone', label: 'Phone no', renderCell: undefined },
+    { id: 'email', label: 'Email id', renderCell: undefined },
+    { id: 'remark', label: 'Remarks', renderCell: undefined },
+    {
+      id: 'action',
+      label: 'Action',
+      renderCell: (data) => {
+        return (
+          <>
+            <IconButton
+              color="primary"
+              onClick={() => {
+                handleSetData(data);
+                handleOpen();
+              }}
+            >
+              <EditIcon />
+            </IconButton>
+            <IconButton color="primary">{/* <HighlightOffIcon /> */}</IconButton>
+          </>
+        );
+      },
+    },
+  ];
+  const { handleChange, handleBlur, handleSubmit, values, errors, touched, setValues, isValid } = useFormik({
+    initialValues: BranchInit,
+    validationSchema: BranchSchema,
+    onSubmit: (values, action) => {
+      mutation.mutate(values);
+      handleClose();
+      action.resetForm();
+    },
+  });
 
   const inputData = [
     {
@@ -103,13 +115,13 @@ export const BranchPage = React.memo(() => {
       ],
     },
     {
-      name: 'pinCode',
+      name: 'pincode',
       label: 'PinCode',
       placeholder: 'Enter Pincode',
       half: false,
-      values: values.pinCode,
+      values: values.pincode,
       required: true,
-      error: errors.pinCode && touched.pinCode ? errors.pinCode : undefined,
+      error: errors.pincode && touched.pincode ? errors.pincode : undefined,
     },
     {
       name: 'phone',
@@ -129,15 +141,15 @@ export const BranchPage = React.memo(() => {
       required: true,
       error: errors.email && touched.email ? errors.email : undefined,
     },
-    {
-      name: 'mobile',
-      label: 'Mobile',
-      placeholder: 'Enter Mobile',
-      half: false,
-      values: values.mobile,
-      required: true,
-      error: errors.mobile && touched.mobile ? errors.mobile : undefined,
-    },
+    // {
+    //   name: 'mobile',
+    //   label: 'Mobile',
+    //   placeholder: 'Enter Mobile',
+    //   half: false,
+    //   values: values.mobile,
+    //   required: true,
+    //   error: errors.mobile && touched.mobile ? errors.mobile : undefined,
+    // },
     {
       name: 'remark',
       label: 'Remarks',
@@ -148,72 +160,34 @@ export const BranchPage = React.memo(() => {
       error: errors.remark && touched.remark ? errors.remark : undefined,
     },
   ];
-
+  React.useEffect(() => {
+    editData && setValues(editData);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [editData]);
   return (
     <>
       <Row>
         <Column>
-          <Modal
-            buttonText={'Branch'}
-            heading="Add Branch"
-            handleClose={handleClose}
-            open={open}
-            handleOpen={handleOpen}
-            handleCloseScreen={handleCloseScreen}
-            form="branch" // Write Page route name
-            maxWidth="md"
-          >
-            <Form
-              onSubmit={handleSubmit}
-              id="branch"
-              rowSpacing={2}
-              columnSpacing={2}
-              about="Branch Details"
-            >
-              {inputData.map(
-                ({
-                  name,
-                  label,
-                  placeholder,
-                  half,
-                  values,
-                  required,
-                  error,
-                  Option,
-                }) => {
-                  return (
-                    // <>
-                    !Option ? (
-                      <Input
-                        name={name}
-                        label={label}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        value={values}
-                        placeholder={placeholder}
-                        required={required}
-                        half={half}
-                        error={error || undefined}
-                        key={name}
-                      />
-                    ) : (
-                      <SelectBar
-                        placeholder="Serach Bar"
-                        option={Option}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        label={label}
-                        name={name}
-                        value={values}
-                        required={required}
-                        key={name}
-                        half={half}
-                      />
-                    )
-                    // </>
-                  );
-                },
-              )}
+          <Modal buttonText={'Branch'} heading="Add Branch" handleClose={handleClose} open={open} handleOpen={handleOpen} handleCloseScreen={handleCloseScreen} form="branch" maxWidth="md" valid={isValid}>
+            <Form onSubmit={handleSubmit} id="branch" rowSpacing={2} columnSpacing={2} about="Branch Details">
+              {inputData.map(({ name, label, placeholder, half, values, required, error, Option }) => {
+                return !Option ? (
+                  <Input
+                    name={name}
+                    label={label}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    value={values}
+                    placeholder={placeholder}
+                    // required={required}
+                    half={half}
+                    error={error || undefined}
+                    key={name}
+                  />
+                ) : (
+                  <SelectBar placeholder="Serach Bar" option={Option} onChange={handleChange} onBlur={handleBlur} label={label} name={name} value={values} required={required} key={name} half={half} />
+                );
+              })}
             </Form>
           </Modal>
         </Column>
@@ -221,7 +195,7 @@ export const BranchPage = React.memo(() => {
           <SearchFilter placeholder="Search on Branch name" />
         </Column>
         <Column xs={12}>
-          <CustomTable column={Branch} />
+          <CustomTable column={Branch} row={row} />
         </Column>
       </Row>
     </>

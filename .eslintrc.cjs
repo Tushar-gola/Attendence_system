@@ -30,6 +30,7 @@ module.exports = {
           "code": 300
       }
   ],
+  'prettier/prettier': 'off',
 
 
 

@@ -38,7 +38,6 @@ export const ModalEvents = () => {
   const handleOpen = () => {
     setOpen(true);
   };
-  console.log(open, 'open');
 
   return { open, handleClose, handleOpen, handleCloseScreen };
 };

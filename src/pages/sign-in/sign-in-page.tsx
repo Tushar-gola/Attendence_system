@@ -1,19 +1,7 @@
 /* eslint-disable quotes */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import * as React from 'react';
-import {
-  Avatar,
-  Button,
-  CssBaseline,
-  TextField,
-  FormControlLabel,
-  Checkbox,
-  Link,
-  Grid,
-  Box,
-  Typography,
-  Container,
-} from '@mui/material';
+import { Avatar, Button, CssBaseline, TextField, FormControlLabel, Checkbox, Link, Grid, Box, Typography, Container } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { useFormik } from 'formik';
 import { SignInPost, SigninInit } from '@/utils';
@@ -21,12 +9,7 @@ import { SigninValid } from '@/schemas';
 import { usePostApi } from '@/hooks';
 function Copyright(props: any) {
   return (
-    <Typography
-      variant="body2"
-      color="text.secondary"
-      align="center"
-      {...props}
-    >
+    <Typography variant="body2" color="text.secondary" align="center" {...props}>
       {'Copyright © '}
       <Link color="inherit" href="https://mui.com/">
         Your Website
@@ -39,14 +22,13 @@ function Copyright(props: any) {
 export function SignIn() {
   const [disabled, setDisabled] = React.useState(true);
   const { mutation } = usePostApi(SignInPost);
-  const { handleChange, handleBlur, handleSubmit, values, errors, touched } =
-    useFormik({
-      initialValues: SigninInit,
-      validationSchema: SigninValid,
-      onSubmit: (values) => {
-        mutation.mutate(values);
-      },
-    });
+  const { handleChange, handleBlur, handleSubmit, values, errors, touched } = useFormik({
+    initialValues: SigninInit,
+    validationSchema: SigninValid,
+    onSubmit: (values) => {
+      mutation.mutate(values);
+    },
+  });
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -93,27 +75,10 @@ export function SignIn() {
             onChange={handleChange}
             onBlur={handleBlur}
             value={values.password}
-            helperText={
-              errors.password && touched.password ? errors.password : null
-            }
+            helperText={errors.password && touched.password ? errors.password : null}
           />
-          <FormControlLabel
-            control={
-              <Checkbox
-                value="remember"
-                color="primary"
-                onChange={(e) => setDisabled(!e.target.checked)}
-              />
-            }
-            label="Remember me"
-          />
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            sx={{ mt: 3, mb: 2 }}
-            disabled={disabled}
-          >
+          <FormControlLabel control={<Checkbox value="remember" color="primary" onChange={(e) => setDisabled(!e.target.checked)} />} label="Remember me" />
+          <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }} disabled={disabled}>
             Sign In
           </Button>
           <Grid container>

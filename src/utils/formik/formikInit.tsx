@@ -12,9 +12,9 @@ export const companyInit = {
   country: '',
   state: '',
   city: '',
-  pinCode: '',
+  pincode: '',
   tin_no: '',
-  pan_no: '',
+  pancard: '',
 };
 export const DepartmentInit = {
   name: '',
@@ -30,9 +30,9 @@ export const BranchInit = {
   country: '',
   state: '',
   city: '',
-  pinCode: '',
+  pincode: '',
   phone: '',
   email: '',
-  mobile: '',
+  // mobile: '',
   remark: '',
 };

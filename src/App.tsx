@@ -49,13 +49,7 @@ export default function App() {
           fontWeight: 400,
         }}
         action={(snackbarId) => (
-          <Button
-            size="small"
-            color="inherit"
-            onClick={() =>
-              snackbarProvider?.current?.closeSnackbar?.(snackbarId)
-            }
-          >
+          <Button size="small" color="inherit" onClick={() => snackbarProvider?.current?.closeSnackbar?.(snackbarId)}>
             Dismiss
           </Button>
         )}

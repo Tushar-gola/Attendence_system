@@ -5,17 +5,7 @@ import Box from '@mui/material/Box';
 import MuiDrawer from '@mui/material/Drawer';
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
-import {
-  List,
-  Typography,
-  Divider,
-  CssBaseline,
-  ListItem,
-  ListItemButton,
-  ListItemText,
-  Collapse,
-  Grid,
-} from '@mui/material';
+import { List, Typography, Divider, CssBaseline, ListItem, ListItemButton, ListItemText, Collapse, Grid } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
@@ -132,20 +122,9 @@ export function MiniDrawer() {
           </Typography>
         </Toolbar>
       </AppBar>
-      <Drawer
-        variant="permanent"
-        open={open}
-        onMouseEnter={handleDrawerOpen}
-        onMouseLeave={handleDrawerClose}
-      >
+      <Drawer variant="permanent" open={open} onMouseEnter={handleDrawerOpen} onMouseLeave={handleDrawerClose}>
         <DrawerHeader>
-          <IconButton onClick={handleDrawerClose}>
-            {theme.direction === 'rtl' ? (
-              <ChevronRightIcon />
-            ) : (
-              <ChevronLeftIcon />
-            )}
-          </IconButton>
+          <IconButton onClick={handleDrawerClose}>{theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}</IconButton>
         </DrawerHeader>
         <Divider />
         <List>
@@ -159,9 +138,7 @@ export function MiniDrawer() {
                     px: 2.5,
                   }}
                   onClick={() => {
-                    subRoute
-                      ? setOpenMenu(openMenu === label ? '' : label)
-                      : navigate(route || '');
+                    subRoute ? setOpenMenu(openMenu === label ? '' : label) : navigate(route || '');
                   }}
                 >
                   <ListItemIcon
@@ -173,27 +150,15 @@ export function MiniDrawer() {
                   >
                     {icon}
                   </ListItemIcon>
-                  <ListItemText
-                    primary={label}
-                    sx={{ opacity: open ? 1 : 0 }}
-                  />
-                  {subRoute &&
-                    (label === openMenu ? (
-                      <ExpandLess sx={{ display: open ? 'block' : 'none' }} />
-                    ) : (
-                      <ExpandMore sx={{ display: open ? 'block' : 'none' }} />
-                    ))}
+                  <ListItemText primary={label} sx={{ opacity: open ? 1 : 0 }} />
+                  {subRoute && (label === openMenu ? <ExpandLess sx={{ display: open ? 'block' : 'none' }} /> : <ExpandMore sx={{ display: open ? 'block' : 'none' }} />)}
                 </ListItemButton>
               </ListItem>
               {subRoute && (
                 <Collapse in={label === openMenu} timeout="auto" unmountOnExit>
                   <List component="div" disablePadding>
                     {subRoute.map(({ route, label, icon }: LinksType) => (
-                      <ListItemButton
-                        sx={{ pl: 4 }}
-                        onClick={() => navigate(route || '')}
-                        key={label}
-                      >
+                      <ListItemButton sx={{ pl: 4 }} onClick={() => navigate(route || '')} key={label}>
                         <ListItemIcon>{icon}</ListItemIcon>
                         <ListItemText primary={label} />
                       </ListItemButton>

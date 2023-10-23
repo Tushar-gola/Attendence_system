@@ -4,8 +4,7 @@ import { useAppDispatch } from '@/hooks';
 
 export const GetAPi = (key: string, fn: () => void) => {
   const dispatch = useAppDispatch();
-  const { data, isError, isLoading, isSuccess } = useQuery(key, fn);
-  console.log(isSuccess, isLoading, isError);
+  const { data, isLoading } = useQuery(key, fn);
   if (isLoading) {
     dispatch(setLoading(true));
   } else {

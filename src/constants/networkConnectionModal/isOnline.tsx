@@ -16,18 +16,11 @@ const style = {
 export function IsOnline() {
   return (
     <div>
-      <Modal
-        open={true}
-        aria-labelledby="parent-modal-title"
-        aria-describedby="parent-modal-description"
-      >
+      <Modal open={true} aria-labelledby="parent-modal-title" aria-describedby="parent-modal-description">
         <Box sx={{ ...style, width: 700 }}>
           <Alert severity="warning" sx={{ fontSize: '1rem', height: '100%' }}>
-            <AlertTitle sx={{ fontSize: '1rem' }}>
-              Warning - Network connection
-            </AlertTitle>
-            Your network connection is down. —{' '}
-            <strong>Please check your internet connection.!</strong>
+            <AlertTitle sx={{ fontSize: '1rem' }}>Warning - Network connection</AlertTitle>
+            Your network connection is down. — <strong>Please check your internet connection.!</strong>
           </Alert>
         </Box>
       </Modal>
