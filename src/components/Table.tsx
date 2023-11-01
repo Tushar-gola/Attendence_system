@@ -40,7 +40,7 @@ interface Props {
   row: [key: string];
 }
 
-export function CustomTable({ column, row }: Props) {
+export const CustomTable =  React.memo(({ column, row }: Props) => {  
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
@@ -67,7 +67,7 @@ export function CustomTable({ column, row }: Props) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {row?.map((row, index) => {
+            {row && row?.map((row, index) => {
               return (
                 <StyledTableRow
                   // hover
@@ -76,7 +76,7 @@ export function CustomTable({ column, row }: Props) {
                   key={index}
                 >
                   {column.map((column) => {
-                    const value = (row as any)[column.id];
+                    const value = (row as any)[column?.id];
                     return <StyledTableCell key={column.id}>{column.renderCell ? column.renderCell(row) : value ? value : 'N/A'}</StyledTableCell>;
                   })}
                 </StyledTableRow>
@@ -88,4 +88,4 @@ export function CustomTable({ column, row }: Props) {
       <TablePagination rowsPerPageOptions={[10, 25, 100]} component="div" count={row?.length || 0} rowsPerPage={rowsPerPage} page={page} onPageChange={handleChangePage} onRowsPerPageChange={handleChangeRowsPerPage} />
     </Paper>
   );
-}
+});

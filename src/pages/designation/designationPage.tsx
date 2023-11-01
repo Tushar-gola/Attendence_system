@@ -1,19 +1,36 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 // @ts-nocheck
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Column, Form, Modal, Row, Input, CustomTable, SearchFilter } from '@/components';
-import { GetAPi, GetTableData, ModalEvents, usePostApi } from '@/hooks';
+import { GetTableData, ModalEvents, usePostApi } from '@/hooks';
 import { DesignationSchema } from '@/schemas';
 import { DesignationGetApi, DesignationInit, DesignationPost, DesignationPut } from '@/utils';
 import { useFormik } from 'formik';
 import { IconButton } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
+import { useQuery } from 'react-query';
+import { isAppendRow } from '@/functions';
 export const DesignationPage = React.memo(() => {
+  const [row, setRow] = React.useState(null);
   const { open, handleClose, handleOpen, handleCloseScreen } = ModalEvents();
   const { editData, handleSetData } = GetTableData();
-  const { data } = GetAPi('designation', DesignationGetApi);
-  const row = data?.data?.data;
-  const { mutation } = usePostApi(editData ? DesignationPut : DesignationPost);
+  const { data } = useQuery('designation', DesignationGetApi, { retry:1 });
+  const { mutation, postData } = usePostApi(editData ? DesignationPut : DesignationPost);
+  if (data && !row) {
+    setRow(data?.data?.data);
+  } 
+  useEffect(()=>{
+    postData && isAppendRow(setRow, postData.data);
+  }, [postData]);
+  const { handleChange, handleBlur, handleSubmit, values, errors, touched, setValues } = useFormik({
+    initialValues: DesignationInit,
+    validationSchema: DesignationSchema,
+    onSubmit: async (values, action) => {
+      mutation.mutate(values);      
+      handleClose();
+      action.resetForm();
+    },
+  });  
   const Designation = [
     { id: 'name', label: 'Name', renderCell: undefined },
     { id: 'remark', label: 'Remarks', renderCell: undefined },
@@ -38,16 +55,6 @@ export const DesignationPage = React.memo(() => {
       },
     },
   ];
-  const { handleChange, handleBlur, handleSubmit, values, errors, touched, setValues } = useFormik({
-    initialValues: DesignationInit,
-    validationSchema: DesignationSchema,
-    onSubmit: (values, action) => {
-      mutation.mutate(values);
-      handleClose();
-      action.resetForm();
-    },
-  });
-
   const inputData = [
     {
       name: 'name',
@@ -68,11 +75,12 @@ export const DesignationPage = React.memo(() => {
       error: errors.remark && touched.remark ? errors.remark : undefined,
     },
   ];
-
   React.useEffect(() => {
     editData && setValues(editData);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [editData]);
+  const memoizedCustomTable = React.useMemo(() => <MemoizedCustomTable column={Designation} row={row} />, [row]);
+  const memoizedCustomSearch = React.useMemo(() => <MemoizedCustomSearch  />, []);
   return (
     <>
       <Row>
@@ -86,13 +94,18 @@ export const DesignationPage = React.memo(() => {
           </Modal>
         </Column>
         <Column xs={3}>
-          <SearchFilter placeholder="Search on Designation name" />
+          {memoizedCustomSearch}
         </Column>
         <Column xs={12}>
-          <CustomTable column={Designation} row={row} />
+          {memoizedCustomTable}
         </Column>
       </Row>
-      {/* <button onClick={handle}>hj\asfdahhsjaklsjhkggh</button> */}
     </>
   );
+});
+const MemoizedCustomTable = React.memo(({ column, row }) => {
+  return <CustomTable column={column} row={row} />;
+});
+const MemoizedCustomSearch = React.memo(()=>{
+  return <SearchFilter placeholder="Search on Designation name" />;
 });

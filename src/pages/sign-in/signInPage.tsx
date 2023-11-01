@@ -29,6 +29,7 @@ export function SignIn() {
       mutation.mutate(values);
     },
   });
+  console.log({mutation});
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />

@@ -8,7 +8,7 @@ interface SearchFilterProps {
   onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
   //   onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void;
 }
-export function SearchFilter({ placeholder, ...props }: SearchFilterProps) {
+export function SearchFilter({ placeholder, ...props }: SearchFilterProps) {  
   return (
     <Paper
       component="form"

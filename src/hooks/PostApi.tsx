@@ -1,19 +1,23 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 // @ts-nocheck
-import { MutationFunction, useMutation } from 'react-query';
+import { MutationFunction, useMutation, useQueryClient  } from 'react-query';
 import { enqueueSnackbar } from 'notistack';
-import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '@/hooks';
 import { setLoading } from '@/redux';
-export const usePostApi = (fn: MutationFunction<unknown>) => {
-  const navigate = useNavigate();
+import React from 'react';
+export const usePostApi = (fn: MutationFunction<unknown>, refetchkey) => {
+  const [postData, setPostData] = React.useState(null);
+  const queryClient = useQueryClient();
   const dispatch = useAppDispatch();
   const mutation = useMutation(fn, {
     onSuccess: (data) => {
+      setPostData(data);
       console.log(data);
       if (data?.data?.token) {
         localStorage.setItem('token', data?.data?.token);
-        navigate('/dashboard');
+      }
+      if(refetchkey){
+        queryClient.invalidateQueries(refetchkey);
       }
     },
     onError: (error) => {
@@ -22,11 +26,12 @@ export const usePostApi = (fn: MutationFunction<unknown>) => {
         variant: error.response.data.type,
       });
     },
-  });
+  });  
   if (mutation?.isLoading) {
     dispatch(setLoading(true));
   } else {
     dispatch(setLoading(false));
   }
-  return { mutation };
+
+  return { mutation, postData };
 };

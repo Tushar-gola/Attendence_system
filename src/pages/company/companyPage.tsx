@@ -3,14 +3,31 @@
 import React from 'react';
 import EditIcon from '@mui/icons-material/Edit';
 import { Column, Form, Modal, Row, Input, CustomTable, SearchFilter } from '@/components';
-import { GetAPi, GetTableData, ModalEvents, usePostApi } from '@/hooks';
+import { GetTableData, ModalEvents, usePostApi } from '@/hooks';
 import { companySchema } from '@/schemas';
 import { CompanyGetApi, CompanyPost, CompanyPut, companyInit } from '@/utils';
 import { useFormik } from 'formik';
 import { IconButton } from '@mui/material';
+import { useQuery } from 'react-query';
 export const CompanyPage = React.memo(() => {
   const { open, handleClose, handleOpen, handleCloseScreen } = ModalEvents();
-  const { data } = GetAPi('company', CompanyGetApi);
+  const { data } = useQuery('company', CompanyGetApi, {retry:1});
+  const { editData, handleSetData } = GetTableData();
+  const { mutation } = usePostApi(editData ? CompanyPut : CompanyPost, 'company');
+  const row = data?.data?.data || [];
+  React.useEffect(() => {
+    editData && setValues(editData);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [editData]);
+  const { handleChange, handleBlur, handleSubmit, values, errors, touched, setValues } = useFormik({
+    initialValues: companyInit,
+    validationSchema: companySchema,
+    onSubmit: (values, action) => {
+      mutation.mutate(values);
+      handleClose();
+      action.resetForm();
+    },
+  });
   const Company = [
     { id: 'id', label: '#id', renderCell: undefined },
     { id: 'company_code', label: 'Company Code', renderCell: undefined },
@@ -46,18 +63,6 @@ export const CompanyPage = React.memo(() => {
       },
     },
   ];
-  const { editData, handleSetData } = GetTableData();
-  const { mutation } = usePostApi(editData ? CompanyPut : CompanyPost);
-  const { handleChange, handleBlur, handleSubmit, values, errors, touched, setValues } = useFormik({
-    initialValues: companyInit,
-    validationSchema: companySchema,
-    onSubmit: (values, action) => {
-      mutation.mutate(values);
-      handleClose();
-      action.resetForm();
-      console.log(action);
-    },
-  });
   const inputData = [
     {
       name: 'company_code',
@@ -168,13 +173,6 @@ export const CompanyPage = React.memo(() => {
       error: errors.pancard && touched.pancard ? errors.pancard : undefined,
     },
   ];
-  const row = data?.data?.data;
-  console.log(row);
-  React.useEffect(() => {
-    editData && setValues(editData);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [editData]);
-
   return (
     <>
       <Row>

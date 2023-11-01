@@ -25,8 +25,6 @@ type ModalProps = {
 };
 
 export const Modal = ({ children, buttonText, heading, handleClose, open, handleOpen, handleCloseScreen, form, maxWidth, vaild }: ModalProps) => {
-  console.log(vaild);
-
   return (
     <>
       <Button onClick={handleOpen} startIcon={<AddIcon />} variant="contained">

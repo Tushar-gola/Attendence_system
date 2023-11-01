@@ -9,14 +9,20 @@ import { Provider } from 'react-redux';
 import { Store } from '@/redux';
 const theme = createTheme({
   palette: {
-    // mode: 'li',
     primary: {
-      main: '#1b998b',
+      main: '#000000',
+      // main: '#1b998b',
     },
   },
 });
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>

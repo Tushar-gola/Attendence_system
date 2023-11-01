@@ -35,23 +35,23 @@ export const DesignationPost = async (values: unknown): Promise<unknown> => {
 // *******************Get apis**********************
 
 export const CompanyGetApi = async () => {
-  return await axios.get(`${BASE_URL}/api/retrieve/company`, {
+  return await axios.get(`${BASE_URL}/api/retrieve/companies`, {
     headers: { Authorization: brToken },
   });
 };
 
 export const BranchGetApi = async () => {
-  return await axios.get(`${BASE_URL}/api/retrieve/branch`, {
+  return await axios.get(`${BASE_URL}/api/retrieve/branches`, {
     headers: { Authorization: brToken },
   });
 };
 export const DepartmentGetApi = async () => {
-  return await axios.get(`${BASE_URL}/api/retrieve/department`, {
+  return await axios.get(`${BASE_URL}/api/retrieve/departments`, {
     headers: { Authorization: brToken },
   });
 };
 export const DesignationGetApi = async () => {
-  return await axios.get(`${BASE_URL}/api/retrieve/designation`, {
+  return await axios.get(`${BASE_URL}/api/retrieve/designations`, {
     headers: { Authorization: brToken },
   });
 };

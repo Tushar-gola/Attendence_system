@@ -3,7 +3,7 @@
 // @ts-nocheck
 import React from 'react';
 import './App.css';
-import { MiniDrawer } from '@/components';
+import { useIsFetching } from 'react-query';
 import { useAppSelector } from '@/hooks';
 import { Loader, IsOnline } from '@/constants';
 import { Routers } from '@/routes';
@@ -11,21 +11,17 @@ import { SnackbarProvider } from 'notistack';
 import { Button } from '@mui/material';
 export default function App() {
   const count = useAppSelector((state) => state.loader.isLoading);
-  const token = localStorage.getItem('token');
   const [isOnline, setIsOnline] = React.useState(navigator.onLine);
+  const isFetching = useIsFetching();
   const snackbarProvider = React.useRef();
   React.useEffect(() => {
-    // Add event listeners for online and offline events
     window.addEventListener('online', handleOnline);
     window.addEventListener('offline', handleOffline);
-
-    // Clean up event listeners when the component unmounts
     return () => {
       window.removeEventListener('online', handleOnline);
       window.removeEventListener('offline', handleOffline);
     };
   }, []);
-
   const handleOnline = () => {
     setIsOnline(true);
   };
@@ -39,7 +35,8 @@ export default function App() {
   return (
     <>
       {!isOnline ? <IsOnline /> : null}
-      {count ? <Loader /> : null}
+      { count ? <Loader /> : null}
+      { isFetching ? <Loader /> : null}
       <SnackbarProvider
         ref={snackbarProvider}
         anchorOrgin={{ horizontal: 'center', vertical: 'bottom' }}
@@ -54,7 +51,7 @@ export default function App() {
           </Button>
         )}
       >
-        {token ? <MiniDrawer /> : <Routers />}
+        <Routers />
       </SnackbarProvider>
     </>
   );
